@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import cors from 'cors'; // Importar el paquete CORS
 import sensorDataRoutes from './infrastructure/routes/sensorDataRoutes';
 
 // Cargar configuración del archivo .env
@@ -21,10 +22,18 @@ mongoose.connect(MONGO_URI)
 
 const app = express();
 app.use(express.json());
+
+// Configurar CORS para permitir todas las solicitudes con opciones específicas
+app.use(cors({
+    origin: '*', // Permite solicitudes de cualquier origen
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos HTTP permitidos
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'], // Encabezados permitidos
+    credentials: true // Permite el envío de cookies y credenciales de autenticación
+}));
+
 app.use('/api', sensorDataRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
-
