@@ -18,7 +18,6 @@ export class CreateSensorData {
                 throw new Error("No user found with this IdEsp");
             }
 
-            // Buscar el último dato de sensor para este usuario y dispositivo
             const lastSensorData = await this.sensorDataRepository.findLastByUserAndDevice(user._id.toString(), sensorData.IdEsp.toString());
 
             let resultData: ISensorData | null;
